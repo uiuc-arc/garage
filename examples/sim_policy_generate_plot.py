@@ -14,6 +14,9 @@ import pandas as pd
 import numpy as np
 import os
 
+from garage.torch import set_gpu_mode
+
+
 
 def plot(rewards, tag):
     
@@ -22,8 +25,8 @@ def plot(rewards, tag):
     reward_df = pd.DataFrame(rewards).melt()
     ax = sns.lineplot(x='variable', y='value', data=reward_df, ax=ax, ci=95, lw=.5)
     ax.set_xlabel('Time Steps')
-    ax.set_ylabel('Reward')
-    ax.set_title('Rewards')
+    ax.set_ylabel('obj_to_target')
+    ax.set_title('Avg obj_to_target')
 
     plt.subplots_adjust(top=.85)
     fig.suptitle(f'{tag} (n={rewards.shape[0]})')
@@ -31,12 +34,12 @@ def plot(rewards, tag):
 
     if not os.path.exists('figures'):
         os.mkdir('figures')
-    fig.savefig(f'figures/{tag}_rewards_returns.jpg')
+    fig.savefig(f'figures/{tag}_obj_to_target.jpg')
 
 
 
 if __name__ == '__main__':
-
+    set_gpu_mode(True, 0)
     parser = argparse.ArgumentParser()
     parser.add_argument('file', type=str, help='path to the snapshot file')
     parser.add_argument('--max_episode_length',
@@ -62,9 +65,10 @@ if __name__ == '__main__':
                            max_episode_length=args.max_episode_length,
                            animated=False,
                            speedup=args.speedup)
-            rewards.append(path['rewards'])
+            rewards.append(path['env_infos']['obj_to_target'])
+
     rewards = np.array(rewards)
-    plot(rewards, "PPO-pick-place-v2-non-max-entropy")
+    plot(rewards, "SAC-pick-place-v2-1_4m_timesteps")
 
             
 

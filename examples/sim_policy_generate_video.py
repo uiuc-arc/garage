@@ -28,7 +28,7 @@ def trajectory_generator(env, policy, res=(640, 480)):
         o = timestep.observation
         done = timestep.step_type == StepType.TERMINAL
         yield timestep.reward, done, timestep.env_info, env.sim.render(
-            *res, mode='offscreen', camera_name='corner')[:, :, ::-1]
+            *res, mode='offscreen', camera_name='topview')[:, :, ::-1]
 
 
 def writer_for(tag, fps, res):
@@ -57,9 +57,9 @@ if __name__ == '__main__':
         env = data['env']
         resolution = (640, 480)
         writer = writer_for(
-            'pick-place-solved-5m',
+            'ppo_peg_insert_v2_5m_seed=512',
             env.metadata['video.frames_per_second'], resolution)
-        for _ in range(10):
+        for _ in range(5):
             for r, done, info, img in trajectory_generator(
                     env, policy, resolution):
                 # img = cv2.rotate(img, cv2.ROTATE_180)

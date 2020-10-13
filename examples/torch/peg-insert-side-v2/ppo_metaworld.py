@@ -26,7 +26,7 @@ from garage.tf.policies import GaussianMLPPolicy
 
 
 @click.command()
-@click.option('--env-name', type=str, default='peg-insert-side-v')
+@click.option('--env-name', type=str, default='peg-insert-side-v2')
 @click.option('--seed', type=int, default=np.random.randint(0, 1000))
 @click.option('--entropy', type=float, default=0.01)
 @click.option('--use_softplus_entropy', type=bool, default=False)
@@ -35,7 +35,7 @@ from garage.tf.policies import GaussianMLPPolicy
 def ppo_metaworld(
     ctxt=None,
     env_name=None,
-    tag='pick-place-caging-working_w_sac_smaller_radius_lower_x_z_constraint',
+    tag='pick-place-caging',
     extra_tags='',
     entropy=0.01,
     stop_entropy_gradient=True,
