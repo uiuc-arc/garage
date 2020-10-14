@@ -48,10 +48,10 @@ class OffPolicyVectorizedSampler(BatchSampler):
         """Initialize the sampler."""
         n_envs = self.n_envs
         envs = [pickle.loads(pickle.dumps(self.env)) for _ in range(n_envs)]
-
+         
         # Deterministically set environment seeds based on the global seed.
-        for (i, e) in enumerate(envs):
-            e.seed(deterministic.get_seed() + i)
+        #for (i, e) in enumerate(envs):
+        #    e.seed(deterministic.get_seed() + i)
 
         self.vec_env = VecEnvExecutor(
             envs=envs, max_path_length=self.algo.max_path_length)
